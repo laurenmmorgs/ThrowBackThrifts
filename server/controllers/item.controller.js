@@ -47,3 +47,21 @@ module.exports.deleteItem = (request, response) => {
         .then(deleteOneItem => response.json(deleteOneItem))
         .catch(err => response.json(err))
 }
+
+// app.post('/upload', upload.single('image'), (req, res) => {
+//   const newItem = new Item({
+//     itemName: req.body.itemName,
+//     price: req.body.price,
+//     itemSize: req.body.itemSize,
+//     category: req.body.category,
+//     description: req.body.description,
+//     image: req.file.filename // save the filename of the uploaded image to the "image" field
+//   })
+//   newItem.save((err) => {
+//     if (err) {
+//       res.status(400).json(err)
+//     } else {
+//       res.json({ message: 'Item created successfully' })
+//     }
+//   })
+// })

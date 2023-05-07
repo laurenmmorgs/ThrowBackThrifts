@@ -1,28 +1,31 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { Link, useNavigate,useParams } from "react-router-dom";
+import { set } from "mongoose";
 
 
 const CreateItem = (props) => {
 
    const {itemDetails, setItemDetails } = props;
 
+   const[image, setImage ] = useState([])
    const [ item, setItem ] = useState({
       itemName : '',
       itemSize : '',
       price: 0,
       category: '',
       description: '',
-      vintage: false,
+      image: ''
    })
    
+   // const [image,setImage] = useState([]);
 
    const navigate = useNavigate();
   //errors
    const [errors, setErrors] = useState({});
 
    const onSubmitHandler = (e) => {
-      console.log(e)
+      // console.log(e)
 
       //prevent default behavior of the submit
       e.preventDefault();
@@ -35,93 +38,124 @@ const CreateItem = (props) => {
           setItemDetails([...itemDetails, res.data]);
           const id = res.data._id
           console.log(id);
-          navigate("/display");
+          navigate("/");
         })
         .catch((err) => {
-          console.log(err);
+         //  console.log(err);
           setErrors(err.response.data.errors);
         });
     };
 
     const changeHandler = (e) => {
-      if (e.target.name === "vintage") {
-         setItem({ ...item, vintage: !item.vintage });
-         // creates an object item, and sets the item name to its correct value
-         //! Make sure for inputs you put the correct name 
+         if(e.target.name === 'image '){
+            var reader = new FileReader();
+            reader.readAsDataURL(e.target.files[0]);
+            reader.onload = () => {
+               console.log(reader.result)
+               // setImage(reader.result);
+               setItem(reader.result);
       }
-      else {
+            
+      }
          setItem({...item, [e.target.name]:e.target.value});
+      }
+   
+   function convertToBase64 (e) {
+      console.log(e)
+      var reader = new FileReader();
+      reader.readAsDataURL(e.target.files[0]);
+      reader.onload = () => {
+         console.log(reader.result)
+         setImage(reader.result);
+      }
+      reader.onerror = error => {
+         console.log("error", error)
       }
    }
 
-
    return (
-      <div>
-         <h1> Post a new item: </h1>
-         <form  onSubmit={onSubmitHandler}>  
+      
+      <div className="row">
+         <div className="mx-auto col-10 col-md-8 col-lg-6"> 
+         <Link to="/"  style={{ position: "absolute", right: 0 }}> back to home </Link>
 
-            <div >
-               <label> Item name: </label>
-               <input type = "text" name="itemName" defaultValue ={item.itemName} onChange = { changeHandler } /> 
+         <h1 className="text-center"> Post a new item: </h1>
+
+         <form  onSubmit={onSubmitHandler} >  
+         <div> 
+
+            <div className="form-group" >
+               <label className="form-label"> Item name: </label>
+               <input className="form-control" type = "text" name="itemName" defaultValue ={item.itemName} onChange = { changeHandler } /> 
                {
                   errors.itemName ? (
-                     <p> {errors.itemName.message} </p>
-                  ):
-                  null
-               }
+                     <p className="text-danger"> {errors.itemName.message} </p>
+                     ):
+                     null
+                  }
             </div>
 
-            <div >
-               <label> Size: </label>
-               <input type = "text" name="itemSize" value ={item.itemSize} onChange = { changeHandler }/> 
+            <div className="form-group" >
+               <label className="form-label"> Size: </label>
+               <input className="form-control" type = "text" name="itemSize" value ={item.itemSize} onChange = { changeHandler }/> 
                {
                   errors.itemSize ? (
-                     <p> {errors.itemSize.message} </p>
-                  ):
-                  null
-               }
+                     <p className="text-danger" > {errors.itemSize.message} </p>
+                     ):
+                     null
+                  }
             </div>
 
-            <div >
-               <label> Category </label>
-               <input type = "text" name="category" defaultValue ={item.category} onChange = { changeHandler }/> 
+            <div className="form-group">
+               <label className="form-label"> Category </label>
+               <input className="form-control" type = "text" name="category" defaultValue ={item.category} onChange = { changeHandler }/> 
                {
                   errors.category ? (
-                     <p> {errors.category.message} </p>
-                  ):
-                  null
-               }
+                     <p className="text-danger"> {errors.category.message} </p>
+                     ):
+                     null
+                  }
             </div>
-
-            <div >
-               <label> Vintage ? </label>
-               <input type = "checkbox" name="vintage" defaultValue ={item.vintage === true } onChange = { changeHandler }/> 
-              
-            </div>
-
-            <div >
-               <label> Price:  </label>
-               <input type="number" name = "price" defaultValue={item.price} onChange = { changeHandler }/> 
+            <div className="form-group">
+               <label className="form-label"> Price:  </label>
+               <input className="form-control" type="number" name = "price" defaultValue={item.price} onChange = { changeHandler }/> 
                {
                   errors.price ? (
-                     <p> {errors.price.message} </p>
-                  ):
-                  null
-               }
+                     <p className="text-danger"> {errors.price.message} </p>
+                     ):
+                     null
+                  }
             </div>
 
-            <div >
-               <label> Description </label>
-               <input type= "text" name ="description" defaultValue ={item.description} onChange = { changeHandler  } />
+            <div className="form-group" >
+               <label className="form-label"> Description </label>
+               <input className="form-control"type= "text" name ="description" defaultValue ={item.description} onChange = { changeHandler  } />
                {
                   errors.description ? (
-                     <p> {errors.description.message} </p>
-                  ):
-                  null
-               }
+                     <p className="text-danger"> {errors.description.message} </p>
+                     ):
+                     null
+                  }
             </div>
+            <div  className="form-group"> 
+
+                  <input 
+                  accepts="image/"
+                  type="file"
+                  onChange={convertToBase64}
+                  name=""
+                  defaultValue={item.image}
+                  />
+                  {
+                     item.image=="" || item.image ==null ? "" : <img width={100} height={100} src={item.image} /> 
+                  }
+                  
+
+            </div>
+         </div>
             <input className="btn btn-primary" type="submit"/>
          </form>
+      </div>
       </div>
    );
 }

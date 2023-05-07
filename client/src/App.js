@@ -2,10 +2,11 @@
 // import Login from './components/Login'
 // import Register from './components/Register'
 
-import DisplayItems from './components/DisplayItems';
 import ItemDetails from './components/ItemDetails';
-import EditItem from './components/ItemDetails';
 import CreateItem from './components/CreateItem';
+import UpdateItem from './components/UpdateItem';
+import Main from './views/Main';
+
 
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
@@ -24,9 +25,9 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route path='/display' element={ <DisplayItems /> } /> 
+          <Route element={<Main /> } path="/" default   />
           <Route path='/addItem' element={ <CreateItem itemDetails = { itemDetails } setItemDetails={ setItemDetails } /> } /> 
-          <Route path='/editItem/:id' element={ <EditItem  /> } /> 
+          <Route path='/item/:id/edit' element={ <UpdateItem  /> } /> 
           <Route path='/item/:id' element={ <ItemDetails itemDetails = { itemDetails } setItemDetails={ setItemDetails }/> } /> 
         </Routes>
       </BrowserRouter>
