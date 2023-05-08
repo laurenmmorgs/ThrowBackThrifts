@@ -11,7 +11,13 @@ mongoose.connect("mongodb://127.0.0.1:27017/thrift-items", {
 })
     .then(() => console.log("Established a connection to the database"))
     .catch(err => console.log("Something went wrong when connecting to the database", err));
-    
+    // //! new 
+    // const Storage = multer.diskStorage({
+    //     destination: 'uploads', 
+    //     filename: (req, file, cb ) => {
+    //         cb(null, file.originalname);
+    //     },
 
+    // });
 
-    
+ 

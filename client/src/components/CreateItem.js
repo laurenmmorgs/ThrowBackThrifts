@@ -5,73 +5,58 @@ import { set } from "mongoose";
 
 
 const CreateItem = (props) => {
+   const { itemDetails, setItemDetails } = props;
 
-   const {itemDetails, setItemDetails } = props;
-
-   const[image, setImage ] = useState([])
-   const [ item, setItem ] = useState({
-      itemName : '',
-      itemSize : '',
-      price: 0,
-      category: '',
-      description: '',
-      image: ''
-   })
-   
-   // const [image,setImage] = useState([]);
-
+   const [image, setImage] = useState("");
+   const [item, setItem] = useState({
+     itemName: "",
+     itemSize: "",
+     price: 0,
+     category: "",
+     description: ""
+   });
+ 
    const navigate = useNavigate();
-  //errors
+ 
    const [errors, setErrors] = useState({});
-
+ 
    const onSubmitHandler = (e) => {
-      // console.log(e)
+     e.preventDefault();
+ 
+     // set the image property of the item object to the value of the image state
+   //   const formData = new FormData();  
+   //   formData.append('image', item.image);
+   //   formData.append('itemName', item.itemName);
+   //   formData.append('price', item.price);
+   //   formData.append('category', item.category);
+   //   formData.append('description', item.description);
 
-      //prevent default behavior of the submit
-      e.preventDefault();
-      //make a post request to create a new item
-      axios
-        .post("http://localhost:8000/api/newItem", item)
-        .then((res) => {
-          console.log("post data", res); // always console log to get used to tracking your data!
-          console.log(res.data);
-          setItemDetails([...itemDetails, res.data]);
-          const id = res.data._id
-          console.log(id);
-          navigate("/");
-        })
-        .catch((err) => {
-         //  console.log(err);
-          setErrors(err.response.data.errors);
-        });
-    };
+   //   console.log(item.image)
+ 
+     axios
+       .post("http://localhost:8000/api/newItem", item)
+       .then((res) => {
+         console.log("post data", res);
+         console.log(res.data);
+         setItemDetails([...itemDetails, res.data]);
+         const id = res.data._id;
+         console.log(id);
+         navigate("/");
+       })
+       .catch((err) => {
+         setErrors(err);
+       });
+   };
+ 
+   const changeHandler = (e) => {
+       setItem({ ...item, [e.target.name]: e.target.value });
+     }
 
-    const changeHandler = (e) => {
-         if(e.target.name === 'image '){
-            var reader = new FileReader();
-            reader.readAsDataURL(e.target.files[0]);
-            reader.onload = () => {
-               console.log(reader.result)
-               // setImage(reader.result);
-               setItem(reader.result);
-      }
-            
-      }
-         setItem({...item, [e.target.name]:e.target.value});
-      }
-   
-   function convertToBase64 (e) {
-      console.log(e)
-      var reader = new FileReader();
-      reader.readAsDataURL(e.target.files[0]);
-      reader.onload = () => {
-         console.log(reader.result)
-         setImage(reader.result);
-      }
-      reader.onerror = error => {
-         console.log("error", error)
-      }
+   const handleImage = (e) => {
+      setItem({...item, image: e.target.files[0]})
+      console.log(item.image)
    }
+
 
    return (
       
@@ -81,7 +66,7 @@ const CreateItem = (props) => {
 
          <h1 className="text-center"> Post a new item: </h1>
 
-         <form  onSubmit={onSubmitHandler} >  
+         <form  onSubmit={onSubmitHandler} encType='multipart/form-data'>  
          <div> 
 
             <div className="form-group" >
@@ -137,21 +122,21 @@ const CreateItem = (props) => {
                      null
                   }
             </div>
-            <div  className="form-group"> 
+            {/* <div  className="form-group"> 
 
                   <input 
-                  accepts="image/"
+                  accepts=".png, .jpg, .jpeg"
                   type="file"
-                  onChange={convertToBase64}
-                  name=""
+                  onChange={handleImage}
+                  name="image"
                   defaultValue={item.image}
                   />
-                  {
-                     item.image=="" || item.image ==null ? "" : <img width={100} height={100} src={item.image} /> 
-                  }
+                  {errors.itemName ? (
+                <p className="text-danger"> {errors.itemName.message} </p>
+               ) : null}
                   
 
-            </div>
+            </div> */}
          </div>
             <input className="btn btn-primary" type="submit"/>
          </form>

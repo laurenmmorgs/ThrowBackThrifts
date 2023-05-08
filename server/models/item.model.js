@@ -24,10 +24,6 @@ const itemSchema = new mongoose.Schema({
       type: String, 
       required: [true, "Please enter a description"],
       minLength: [5, "Description should be at least 5 characters"]
-    },
-    image : {
-      type: String,
-      required : [ true, "Please upload the photo of the goods"]
     }
 }, { timestamps: true });
 module.exports = mongoose.model('Item', itemSchema);

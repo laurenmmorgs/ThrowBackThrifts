@@ -1,7 +1,5 @@
 const ItemController = require('../controllers/item.controller');
-
-// const multer = require('multer');
-// const config = require('../config');
+const multer = require('multer');
 
 
 module.exports = (app) => {

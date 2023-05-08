@@ -1,13 +1,11 @@
 const { model } = require('mongoose');
 const Item = require('../models/item.model');    /* this is new */
+const multer = require('multer');
+const fs = require('fs');
 
 
-module.exports.index = (request, response) => {
-    response.json({
-        message: "Hello World"
-    });
-}
-          /* The method below is new */
+
+/* The method below is new */
 module.exports.createItem = (request, response) => {
     // Mongoose's "create" method is run using our Item model to add a new Item to our db's Item collection.
     // request.body will contain something like {firstName: "Billy", lastName: "Washington"} from the client
@@ -15,6 +13,14 @@ module.exports.createItem = (request, response) => {
         .then(Item => response.json(Item))
         .catch(err => response.status(400).json(err));
 }
+  
+module.exports.index = (request, response) => {
+    response.json({
+        message: "Hello World"
+    });
+}
+
+
 module.exports.findAllItems = (req, res) => {
     Item.find()
         .then((allDaItems) => {
@@ -46,22 +52,6 @@ module.exports.deleteItem = (request, response) => {
     Item.deleteOne({_id: request.params.id})
         .then(deleteOneItem => response.json(deleteOneItem))
         .catch(err => response.json(err))
+
 }
 
-// app.post('/upload', upload.single('image'), (req, res) => {
-//   const newItem = new Item({
-//     itemName: req.body.itemName,
-//     price: req.body.price,
-//     itemSize: req.body.itemSize,
-//     category: req.body.category,
-//     description: req.body.description,
-//     image: req.file.filename // save the filename of the uploaded image to the "image" field
-//   })
-//   newItem.save((err) => {
-//     if (err) {
-//       res.status(400).json(err)
-//     } else {
-//       res.json({ message: 'Item created successfully' })
-//     }
-//   })
-// })
