@@ -38,7 +38,7 @@ const ItemDetails = () => {
 
       <div className="border"> 
 
-        <h1> Image Here </h1>
+      <img src={`http://localhost:8000/${item.itemImage}`} style={{ width: '500px', height: '350px'}}  /> 
       </div>
       <div className="text-center" >
         <h4> Product: {item.itemName} </h4>

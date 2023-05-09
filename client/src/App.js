@@ -20,13 +20,14 @@ function App() {
   //* Item states 
 
   const [itemDetails, setItemDetails] = useState([])
+  const [imageDetails, setImageDetails] = useState([])
 
   return (
     <div className="App">
       <BrowserRouter>
         <Routes>
           <Route element={<Main /> } path="/" default   />
-          <Route path='/addItem' element={ <CreateItem itemDetails = { itemDetails } setItemDetails={ setItemDetails } /> } /> 
+          <Route path='/addItem' element={ <CreateItem imageDetails = { imageDetails} setImageDetails = {setImageDetails}  itemDetails = { itemDetails } setItemDetails={ setItemDetails } /> } /> 
           <Route path='/item/:id/edit' element={ <UpdateItem  /> } /> 
           <Route path='/item/:id' element={ <ItemDetails itemDetails = { itemDetails } setItemDetails={ setItemDetails }/> } /> 
         </Routes>

@@ -1,18 +1,65 @@
 const { model } = require('mongoose');
 const Item = require('../models/item.model');    /* this is new */
+// const Image = require('../models/image.model')
 const multer = require('multer');
 const fs = require('fs');
 
 
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, './uploads/');
+    },
+    filename: function (req, file, cb) {
+        cb(null, file.originalname);
+    }
+});
 
-/* The method below is new */
+const fileFilter = (req, file, cb) => {
+    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+        cb(null, true);
+    } else {
+        cb(new Error('Invalid file type, only JPEG and PNG are allowed!'), false);
+    }
+};
+
+const upload = multer({
+    storage: storage,
+    limits: {
+        fileSize: 1024 * 1024 * 5 // 5MB
+    },
+    fileFilter: fileFilter
+});
+
+module.exports = upload;
+
+
+
 module.exports.createItem = (request, response) => {
-    // Mongoose's "create" method is run using our Item model to add a new Item to our db's Item collection.
-    // request.body will contain something like {firstName: "Billy", lastName: "Washington"} from the client
-    Item.create(request.body) //This will use whatever the body of the client's request sends over
-        .then(Item => response.json(Item))
-        .catch(err => response.status(400).json(err));
-}
+    upload.single('itemImage')(request, response, (err) => {
+        if (err) {
+            return response.status(400).json({ error: err.message });
+        }
+        console.log(request.file)
+  
+        // console.log(request.body)
+        const newItem = new Item({
+            itemName: request.body.itemName,
+            price: request.body.price,
+            itemSize: request.body.itemSize,
+            category: request.body.category,
+            description: request.body.description,
+            itemImage: request.file ? request.file.path : null // check if file exists before accessing path
+        });
+
+        newItem.save()
+            .then((item) => {
+                response.status(201).json({ item });
+            })
+            .catch((error) => {
+                response.status(400).json({ error });
+            });
+    });
+};
   
 module.exports.index = (request, response) => {
     response.json({

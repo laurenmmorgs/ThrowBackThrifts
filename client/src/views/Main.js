@@ -6,11 +6,13 @@ import axios from 'axios'
 function Main(props) {
 
    const [item, setItem ] = useState([]);
+   const [imageDetails, setImageDetails] = useState([]);
+
 
    return (
       <div> 
          <Nav /> 
-         <DisplayItems item={item} setItem={setItem} />
+         <DisplayItems imageDetails = { imageDetails} setImageDetails = {setImageDetails} item={item} setItem={setItem}  />
       </div>
    )
 }
