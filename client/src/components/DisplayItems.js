@@ -38,7 +38,7 @@ const DisplayItems = () => {
       {items.map((item) => (
           <div
             key={item._id}
-            className="card border border-primary p-2 mx-2 mb-4 w-25"
+            className="card rounded p-2"  style={{width: "20rem" }}
             >
             <img src={`http://localhost:8000/${item.itemImage}`}   className="card-img-top" /> 
             <div className="text-center">

@@ -4,7 +4,7 @@ const Item = require('../models/item.model');    /* this is new */
 const multer = require('multer');
 const fs = require('fs');
 
-
+    ///this sets the storage folder inside the client public folder
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, './uploads/');
@@ -13,7 +13,7 @@ const storage = multer.diskStorage({
         cb(null, file.originalname);
     }
 });
-
+//making sure that they are the correct type of file 
 const fileFilter = (req, file, cb) => {
     if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
         cb(null, true);
@@ -21,7 +21,7 @@ const fileFilter = (req, file, cb) => {
         cb(new Error('Invalid file type, only JPEG and PNG are allowed!'), false);
     }
 };
-
+//ensures that the upload is uploaded to storage with file sizes
 const upload = multer({
     storage: storage,
     limits: {
@@ -33,7 +33,7 @@ const upload = multer({
 module.exports = upload;
 
 
-
+//creates an item with the photos 
 module.exports.createItem = (request, response) => {
     upload.single('itemImage')(request, response, (err) => {
         if (err) {
@@ -48,7 +48,7 @@ module.exports.createItem = (request, response) => {
             itemSize: request.body.itemSize,
             category: request.body.category,
             description: request.body.description,
-            itemImage: request.file ? request.file.path : null // check if file exists before accessing path
+            itemImage: request.file ? request.file.path : null // checks if file exists before accessing path
         });
 
         newItem.save()

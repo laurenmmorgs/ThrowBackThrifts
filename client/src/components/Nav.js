@@ -1,5 +1,5 @@
 import React from 'react'
-import backgroundImage from '../assets/Vintage.jpg'
+import backgroundImage from '../assets/backroundAbstract.jpg'
 import { Link } from "react-router-dom";
 import logo from '../assets/ThrowBackThriftsLogo.png'
 
