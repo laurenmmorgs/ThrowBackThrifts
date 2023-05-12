@@ -2,6 +2,7 @@ import { React, useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
+
 const DisplayItems = () => {
   const [items, setItems] = useState([]);
 
@@ -39,6 +40,7 @@ const DisplayItems = () => {
                 <Link to={`/item/${item._id}`} className="icon-link icon-link-hover text-secondary"> view item </Link>
               </div>
 
+             
             </div>
           </div>
         ))}
