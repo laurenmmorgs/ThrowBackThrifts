@@ -29,10 +29,10 @@ function Nav() {
                            <a className="nav-link active" aria-current="page" href="/">Home</a>
                         </li>
                         <li className="nav-item">
-                           <a className="nav-link" href="/">Login</a>
+                           <a className="nav-link" href="/login">Login</a>
                         </li>
                         <li className="nav-item">
-                           <a className="nav-link" href="/">SignUP</a>
+                           <a className="nav-link" href="/register">SignUp</a>
                         </li>
                         <li className="nav-item">
                            <Link to="/addItem" className="btn btn-primary" style={{ position: "absolute", right: 0 }}>List an item</Link>

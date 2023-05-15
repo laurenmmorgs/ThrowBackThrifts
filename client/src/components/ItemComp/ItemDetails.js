@@ -52,7 +52,7 @@ const ItemDetails = () => {
         </div>
         <div >
           <h1> Product: {item.itemName} </h1>
-          <h4> Price : {item.price} </h4>
+          <h4> Price : ${item.price} </h4>
           <h3> Category: {item.category} </h3>
           <h3> Size: {item.itemSize} </h3>
           <p>  Description : {item.description} </p>
