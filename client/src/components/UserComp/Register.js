@@ -1,60 +1,68 @@
-import React, { useState } from "react";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
-
+import React, {useState} from 'react';
+import axios from 'axios';
+import { useNavigate, Link } from 'react-router-dom';
 const Register = (props) => {
-
-   const navigate = useNavigate();
-
-   const { userDetails, setUserDetails } = props;
-
-   const [user, setUser] = useState({
-      firstName: '',
-      lastName: '',
-      email: '',
-      password : ''
-   })
-
-   const handleSubmit = async (e) =>{
-      e.preventDefault()
-      console.log(user)
-      axios
-      .post("http://localhost:8000/api/register", user)
-      .then((res) => {
-         console.log("post data", res.data)
-         setUserDetails([...userDetails, res.data])
-         navigate("/login")
-      })
-   }
+    const navigate = useNavigate()
 
 
-   const changeHandler = (e) => {
-      setUser({...user, [e.target.name]:e.target.value
-      })
-   }
+    const [user, setUser] = useState({
+        firstName:'',
+        lastName:'',
+        email:'',
+        password:'',
+        confirmPassword:''
+    })
+    
+    const changeHandler = (e) => {
+        setUser({...user, [e.target.name]:e.target.value})
+    }
 
+    // !SubmitHandler
+    const [errors, setErrors] = useState({});
+
+    const submitHandler = (e) => {
+        e.preventDefault();
+        axios.post('http://localhost:8000/api/register', user, {withCredentials:true})
+            .then((res) => {
+                console.log(res);
+                navigate('/')
+            })
+            .catch((err) => {
+                console.log(err);
+                setErrors(err.response.data.error.errors)
+            })
+    }
     return (
-        <div> 
-         <form className="signUp" onSubmit={handleSubmit}>
-            <h3> Sign Up! </h3>
-               <label> First Name: </label>
-               <input type="text" onChange={changeHandler} name="firstName" value={user.firstName} /> 
+        <div>
+            <form onSubmit={submitHandler}>
+                <div>
+                    <label>First Name: </label>
+                    <input type="text" onChange={changeHandler} value={user.firstName} name='firstName'/>
+                { errors.firstName ? (
+                <p className="text-danger"> {errors.firstName.message} </p>
+              ) : null}
+                </div>
 
-               <label> Last Name: </label>
-               <input type="text" onChange={changeHandler}  name="lastName" value={user.lastName}/> 
-
-               <label> Email: </label>
-               <input type="Email" onChange={changeHandler} name="email" value={user.email} /> 
-
-               <label> Password: </label>
-               <input type="password" onChange={changeHandler}  name="password" value={user.password}/> 
-
-               <label> Confirm Password: </label>
-               <input type="password" onChange={changeHandler}  name="confirmPassword"/> 
-
-               <button> Sign Up</button>
-         </form>
+                <div>
+                    <label>Last Name: </label>
+                    <input type="text" onChange={changeHandler} value={user.lastName} name='lastName'/>
+                </div>
+                <div>
+                    <label>Email: </label>
+                    <input type="text" onChange={changeHandler} value={user.email} name='email'/>
+                </div>
+                <div>
+                    <label>Password: </label>
+                    <input type="password" onChange={changeHandler} value={user.password} name='password'/>
+                </div>
+                <div>
+                    <label>Confirm Password: </label>
+                    <input type="password" onChange={changeHandler} value={user.confirmPassword} name='confirmPassword'/>
+                </div>
+                <button>Register</button>
+            </form>
+            <Link to={'/login'}>Already have an account?</Link>
         </div>
-    );
-  };
+)}
+
 export default Register;

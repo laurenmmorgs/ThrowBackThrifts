@@ -1,6 +1,5 @@
-// import AllUsers from './components/UserComp/AllUsers';
-// import Login from './components/Login'
-// import Register from './components/Register'
+import Login from './components/UserComp/Login';
+import Register from './components/UserComp/Register';
 import UpdateItem from './components/ItemComp/UpdateItem';
 import MainPage from './views/MainPage';
 import CreatePage from './views/CreatePage'
@@ -24,6 +23,8 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Routes>
+          <Route element = { <Login/> } path = "/login" /> 
+          <Route element = { <Register/>} path="/register" /> 
           <Route element={<MainPage /> } path="/" default   />
           <Route path='/addItem' element={ <CreatePage /> } /> 
           <Route path='/item/:id/edit' element={ <UpdateItem  /> } /> 
