@@ -3,7 +3,7 @@ import React from 'react';
 function About() {
    return (
       <div>
-         <footer class="card bg-body-tertiary text-light" data-bs-theme = "dark">
+         <footer class="card bg-body-tertiary text-light sticky-bottom" data-bs-theme = "dark">
             <div class="card-header text-center" >
                About Us 
             </div>

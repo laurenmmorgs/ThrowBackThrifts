@@ -1,40 +1,47 @@
-import React, { useState } from "react";
+import React, {useState} from 'react';
+import axios from 'axios';
+import { useNavigate, Link } from 'react-router-dom';
 
-export default function Login() {
-  const [user, setUser] = useState({
-    email: "",
-    password: "",
-  });
+const Login = (props) => {
+    const navigate = useNavigate()
+    const [userLogin, setUserLogin] = useState({
+        email:'',
+        password:''
+    })
 
-  function handleSubmit(event) {
-    event.preventDefault();
-  }
-  const changeHandler = (e) => {
-    setUser({ ...user, [e.target.name]: e.target.value });
+    const changeHandler = (e) => {
+        setUserLogin({...userLogin, [e.target.name]:e.target.value})
+    }
+
+    const loginHandler = (e) => {
+        e.preventDefault()
+        axios.post('http://localhost:8000/api/login', userLogin, {withCredentials:true})
+            .then((res) => {
+                console.log(res);
+                navigate('/dashboard')
+            })
+            .catch((err) => {
+                console.log(err);
+            })
+    }
+
 
     return (
-      <h1> hi </h1>
-      // <form className="login" onSubmit={handleSubmit}>
-      //   <h3> Login </h3>
+        <div>
+            <h2>Login</h2>
+            <Link to="/" className="btn btn-primary" style={{ position: "absolute", right: 20}}>Back To Home Page</Link>
+            <form onSubmit={loginHandler} className='col-4 mx-auto user-form'>
+                <label className='form-label'>Email:</label>
+                <input className='form-control' type="text" name='email' value={userLogin.email} onChange={changeHandler}/>
 
-      //   <label> Email: </label>
-      //   <input
-      //     type="Email"
-      //     onChange={changeHandler}
-      //     name="email"
-      //     value={user.email}
-      //   />
+                <label className='form-label'>Password:</label>
+                <input className='form-control' type="password" name='password' value={userLogin.password} onChange={changeHandler}/>
 
-      //   <label> Password: </label>
-      //   <input
-      //     type="password"
-      //     onChange={changeHandler}
-      //     name="password"
-      //     value={user.password}
-      //   />
+                <button className='btn btn-dark mt-3'>Login</button>
+                <br />
+                <Link className='text-white' to={'/register'}>Dont have an account? click here to sign up</Link>
+            </form>
+        </div>
+)}
 
-      //   <button> Sign Up</button>
-      // </form>
-    );
-  };
-}
+export default Login;
